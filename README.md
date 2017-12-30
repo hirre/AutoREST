@@ -8,7 +8,7 @@ Don't use this as your public REST API!
 
 	dotnet AutoRestRunService.dll
 
-or to change the default port (5000):
+or to change the default port (5000) to e.g. 5005:
 
 	dotnet AutoRestRunService.dll --port 5005
 
@@ -101,3 +101,7 @@ http://localhost:5000/api/tables/testtable/id/3
 ```
 
 200 HTTP code is received on success.
+
+## Remarks
+Basic SQL injection protection is implemented although you shouldn't count on it.
+The connections string is entered in *appsettings.json*
