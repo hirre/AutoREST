@@ -12,8 +12,6 @@ or to change the default port (5000):
 
 	dotnet AutoRestRunService.dll --port 5005
 
-dotnet 
-
 ## Usage
 
 **GET**
