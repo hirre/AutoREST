@@ -16,8 +16,6 @@ namespace AutoRest.RunService
         {
             var port = GetPort(args);
 
-            Console.WriteLine($"Server started on port {port}.");
-
             // Create the service and block until closed.
             AutoRestServiceFactory.Create(args, port).Run();
 
@@ -35,7 +33,7 @@ namespace AutoRest.RunService
             {
                 for (var i = 0; i < args.Count; i++)
                 {
-                    if (!args[i].Equals("-p", StringComparison.Ordinal)) continue;
+                    if (!args[i].Equals("--port", StringComparison.Ordinal)) continue;
 
                     if (int.TryParse(args[i + 1], out var port))
                         return port;
