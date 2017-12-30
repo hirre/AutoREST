@@ -34,10 +34,7 @@ namespace AutoRest.Controllers
             string filter = null;
 
             // Get filter if it exists
-            if (Request.Query.ContainsKey("filter"))
-            {
-                filter = Request.Query["filter"];
-            }
+            if (Request.Query.ContainsKey("filter")) filter = Request.Query["filter"];
 
             var res = _dbLogic.Select(tableName, orderBy, filter, offset, pageSize);
 

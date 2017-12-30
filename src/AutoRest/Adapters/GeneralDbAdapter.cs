@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AutoRest.Interfaces;
 using Newtonsoft.Json.Linq;
 
@@ -30,6 +31,11 @@ namespace AutoRest.Adapters
                 try
                 {
                     conn.Open();
+
+                    if (CheckForSqlInjection(tableName) ||
+                        CheckForSqlInjection(orderBy) ||
+                        CheckForSqlInjection(filter))
+                        throw new Exception("SQL injection detected in input!");
 
                     var sql = GetSelectString(tableName, orderBy, filter, offset, pageSize);
 
@@ -71,6 +77,9 @@ namespace AutoRest.Adapters
                 {
                     conn.Open();
 
+                    if (CheckForSqlInjection(tableName))
+                        throw new Exception("SQL injection detected in input!");
+
                     var sql = GetInsertString(tableName, obj);
 
                     using (var cmd = new SqlCommand(sql, conn))
@@ -99,6 +108,11 @@ namespace AutoRest.Adapters
                 {
                     conn.Open();
 
+                    if (CheckForSqlInjection(tableName) ||
+                        CheckForSqlInjection(keyName) ||
+                        CheckForSqlInjection(keyValue))
+                        throw new Exception("SQL injection detected in input!");
+
                     var sql = GetUpdateString(tableName, keyName, keyValue, obj);
 
                     using (var cmd = new SqlCommand(sql, conn))
@@ -126,6 +140,11 @@ namespace AutoRest.Adapters
                 {
                     conn.Open();
 
+                    if (CheckForSqlInjection(tableName) ||
+                        CheckForSqlInjection(keyName) ||
+                        CheckForSqlInjection(keyValue))
+                        throw new Exception("SQL injection detected in input!");
+
                     var sql = GetDeleteString(tableName, keyName, keyValue);
 
                     using (var cmd = new SqlCommand(sql, conn))
@@ -146,6 +165,92 @@ namespace AutoRest.Adapters
 
         #region Protected virtual SQL string methods
 
+        protected Dictionary<string, string> SqlInjectionWords = new Dictionary<string, string>
+        {
+            {"--", null},
+            {";--", null},
+            {";", null},
+            {"/*", null},
+            {"*/", null},
+            {"@@", null},
+            {"@", null},
+            {"char", null},
+            {"nchar", null},
+            {"varchar", null},
+            {"nvarchar", null},
+            {"alter", null},
+            {"begin", null},
+            {"cast", null},
+            {"create", null},
+            {"cursor", null},
+            {"declare", null},
+            {"delete", null},
+            {"drop", null},
+            {"end", null},
+            {"exec", null},
+            {"execute", null},
+            {"fetch", null},
+            {"insert", null},
+            {"kill", null},
+            {"select", null},
+            {"sys", null},
+            {"sysobjects", null},
+            {"syscolumns", null},
+            {"table", null},
+            {"update", null}
+        };
+
+        /// <summary>
+        ///     Basic SQL injection check.
+        /// </summary>
+        /// <param name="str">Input string</param>
+        /// <returns></returns>
+        protected bool CheckForSqlInjection(string str)
+        {
+            var checkStr = str.Replace("'", "''").ToLower();
+            var cArr = checkStr.Split();
+
+            return cArr.Any(w => SqlInjectionWords.ContainsKey(w));
+        }
+
+        /// <summary>
+        ///     Creates the SQL filter query based on URL input.
+        /// </summary>
+        /// <param name="filter">URL filter query</param>
+        /// <returns>SQL query</returns>
+        protected virtual string CreateSqlFilterQuery(string filter)
+        {
+            /*
+             *  SUPPORTED EXPRESSIONS:
+             *
+             *  and
+             *  or
+             *  in
+             *  like
+             *  not
+             *  eq - equals
+             *  gt - greater than
+             *  ge - greater than or equal
+             *  lt - less than
+             *  le - less than or equal
+             *  () - parentheses
+             *
+             *  EXAMPLE:
+             *
+             *  api/tables/testtable/id?filter=col1 eq 3 and (col2 like 'hello' or 3 in (1, 2, 3))
+             *
+             */
+
+            filter = Regex.Replace(filter, @"\bnot\b", "<>", RegexOptions.IgnoreCase);
+            filter = Regex.Replace(filter, @"\beq\b", "=", RegexOptions.IgnoreCase);
+            filter = Regex.Replace(filter, @"\bgt\b", ">", RegexOptions.IgnoreCase);
+            filter = Regex.Replace(filter, @"\bge\b", ">=", RegexOptions.IgnoreCase);
+            filter = Regex.Replace(filter, @"\blt\b", "<", RegexOptions.IgnoreCase);
+            filter = Regex.Replace(filter, @"\ble\b", "<=", RegexOptions.IgnoreCase);
+
+            return filter;
+        }
+
         /// <summary>
         ///     Get select SQL string.
         /// </summary>
@@ -155,7 +260,8 @@ namespace AutoRest.Adapters
         /// <param name="offset">Page offset</param>
         /// <param name="pageSize">Page size</param>
         /// <returns>The SQL string</returns>
-        protected virtual string GetSelectString(string tableName, string orderBy, string filter, int offset, int pageSize)
+        protected virtual string GetSelectString(string tableName, string orderBy, string filter, int offset,
+            int pageSize)
         {
             throw new NotImplementedException(
                 "Not implemented due to the fact that the SQL syntax varies depending on database server.");
@@ -178,6 +284,10 @@ namespace AutoRest.Adapters
 
             foreach (var prop in obj.Properties())
             {
+                if (CheckForSqlInjection(prop.Name) ||
+                    CheckForSqlInjection(prop.Value.ToString()))
+                    throw new Exception("SQL injection detected in input!");
+
                 var val = prop.Value;
 
                 if (!double.TryParse((string) val, out var _))
@@ -207,6 +317,10 @@ namespace AutoRest.Adapters
 
             foreach (var prop in obj.Properties())
             {
+                if (CheckForSqlInjection(prop.Name) ||
+                    CheckForSqlInjection(prop.Value.ToString()))
+                    throw new Exception("SQL injection detected in input!");
+
                 var val = prop.Value;
 
                 if (!double.TryParse((string) val, out var _))
