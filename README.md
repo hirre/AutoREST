@@ -30,7 +30,7 @@ api/tables/{TABLE NAME}/
 
 Example:
 
-```json
+```url
 http://localhost:5000/api/tables/testtable/
 
 BODY:
@@ -41,6 +41,8 @@ BODY:
 }
 
 ```
+
+200 HTTP code is received on success.
 
 **PATCH/PUT**
 
@@ -54,7 +56,7 @@ Column name indicates which column to look for with a specific column value.
 
 Example:
 
-```json
+```url
 http://localhost:5000/api/tables/testtable/id/3
 
 BODY:
@@ -65,6 +67,8 @@ BODY:
 }
 
 ```
+
+200 HTTP code is received on success.
 
 **DELETE**
 
@@ -79,3 +83,5 @@ Example:
 ```url
 http://localhost:5000/api/tables/testtable/id/3
 ```
+
+200 HTTP code is received on success.
