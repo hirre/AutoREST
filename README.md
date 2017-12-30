@@ -4,6 +4,16 @@ AutoREST is a library and a console app written in ASP .NET Core 2.0 which autom
 
 Don't use this as your public REST API!
 
+## How to run
+
+	dotnet AutoRestRunService.dll
+
+or to change the default port:
+
+	dotnet AutoRestRunService.dll --port 5005
+
+dotnet 
+
 ## Usage
 
 **GET**
