@@ -30,7 +30,7 @@ http://localhost:5000/api/tables/testtable/id/true/0/10/?filter=column1 > 7 and 
 
 **POST**
 
-Send JSON data to the below API endpoint:
+Send JSON data to this API endpoint:
 
 ```url
 api/tables/{TABLE NAME}/
@@ -58,7 +58,7 @@ BODY:
 
 **PATCH/PUT**
 
-Send JSON data to the below API endpoint:
+Send JSON data to this API endpoint:
 
 ```url
 api/tables/{TABLE NAME}/{COLUMN NAME}/{COLUMN VALUE}
@@ -103,5 +103,5 @@ http://localhost:5000/api/tables/testtable/id/3
 200 HTTP code is received on success.
 
 ## Remarks
-Basic SQL injection protection is implemented although you shouldn't count on it.
-The connections string is entered in *appsettings.json*
+* Basic SQL injection protection is implemented although you shouldn't count on it.
+* The connections string is entered in *appsettings.json*
