@@ -3,7 +3,7 @@
 AutoREST is a cross-platform library and a console app written in ASP .NET Core 2.0 that automatically creates a basic REST service for your database. 
 The library supports basic CRUD and SQL. 
 
-**WARNING! Don't use this as your public REST API!**
+**WARNING! Don't use this software as your public REST API!**
 
 ## How to run
 
@@ -110,4 +110,4 @@ http://localhost:5000/api/tables/testtable/id/3
 * The database connection string is entered in *appsettings.json*.
 * You can also choose to extend the library with different database adapters if you don't want to use the default SQL Server adapter.
 * Doesn't support SQL joins (REST/URL includes).
-* **WARNING! Don't use this as your public REST API!**
+* **WARNING! Don't use this software as your public REST API!**
