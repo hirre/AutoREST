@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using AutoRest.Configuration;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace AutoRest
+namespace AutoRest.RunService
 {
-    /// <summary>
-    ///     Service factory for the web host.
-    /// </summary>
-    public static class WebServiceFactory
+    public static class Program
     {
         private const int DEFAULT_PORT = 5000;
 
@@ -25,23 +19,9 @@ namespace AutoRest
             Console.WriteLine($"Server started on port {port}.");
 
             // Create the service and block until closed.
-            Create(args, port).Run();
+            AutoRestServiceFactory.Create(args, port).Run();
 
             Console.WriteLine("Server stopped.");
-        }
-
-        /// <summary>
-        ///     Get web host.
-        /// </summary>
-        /// <param name="args">Start arguments</param>
-        /// <param name="port">Server listen port</param>
-        /// <returns>Web host</returns>
-        public static IWebHost Create(string[] args, int port)
-        {
-            return WebHost.CreateDefaultBuilder(args)
-                .UseKestrel(options => { options.Listen(IPAddress.Loopback, port); })
-                .UseStartup<Startup>()
-                .Build();
         }
 
         /// <summary>
