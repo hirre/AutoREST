@@ -24,7 +24,7 @@ namespace AutoRest.Adapters
                       $"FETCH NEXT {pageSize} ROWS ONLY";
             else
                 sql = $"SELECT * FROM {tableName} " +
-                      $"WHERE {CreateSqlFilterQuery(filter)} " +
+                      $"WHERE {filter} " +
                       $"ORDER BY {orderBy} " +
                       $"OFFSET {offset} ROWS " +
                       $"FETCH NEXT {pageSize} ROWS ONLY";

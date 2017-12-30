@@ -165,7 +165,8 @@ namespace AutoRest.Adapters
 
         #region Protected virtual SQL string methods
 
-        protected Dictionary<string, string> SqlInjectionWords = new Dictionary<string, string>
+        protected static Dictionary<string, string> SqlInjectionDictionary = 
+            new Dictionary<string, string>
         {
             {"--", null},
             {";--", null},
@@ -210,45 +211,7 @@ namespace AutoRest.Adapters
             var checkStr = str.Replace("'", "''").ToLower();
             var cArr = checkStr.Split();
 
-            return cArr.Any(w => SqlInjectionWords.ContainsKey(w));
-        }
-
-        /// <summary>
-        ///     Creates the SQL filter query based on URL input.
-        /// </summary>
-        /// <param name="filter">URL filter query</param>
-        /// <returns>SQL query</returns>
-        protected virtual string CreateSqlFilterQuery(string filter)
-        {
-            /*
-             *  SUPPORTED EXPRESSIONS:
-             *
-             *  and
-             *  or
-             *  in
-             *  like
-             *  not
-             *  eq - equals
-             *  gt - greater than
-             *  ge - greater than or equal
-             *  lt - less than
-             *  le - less than or equal
-             *  () - parentheses
-             *
-             *  EXAMPLE:
-             *
-             *  api/tables/testtable/id?filter=col1 eq 3 and (col2 like 'hello' or 3 in (1, 2, 3))
-             *
-             */
-
-            filter = Regex.Replace(filter, @"\bnot\b", "<>", RegexOptions.IgnoreCase);
-            filter = Regex.Replace(filter, @"\beq\b", "=", RegexOptions.IgnoreCase);
-            filter = Regex.Replace(filter, @"\bgt\b", ">", RegexOptions.IgnoreCase);
-            filter = Regex.Replace(filter, @"\bge\b", ">=", RegexOptions.IgnoreCase);
-            filter = Regex.Replace(filter, @"\blt\b", "<", RegexOptions.IgnoreCase);
-            filter = Regex.Replace(filter, @"\ble\b", "<=", RegexOptions.IgnoreCase);
-
-            return filter;
+            return cArr.Any(w => SqlInjectionDictionary.ContainsKey(w));
         }
 
         /// <summary>
