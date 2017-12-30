@@ -8,7 +8,7 @@ Don't use this as your public REST API!
 
 	dotnet AutoRestRunService.dll
 
-or to change the default port:
+or to change the default port (5000):
 
 	dotnet AutoRestRunService.dll --port 5005
 
