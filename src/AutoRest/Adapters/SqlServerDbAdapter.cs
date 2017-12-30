@@ -12,14 +12,15 @@ namespace AutoRest.Adapters
         }
 
         /// <inheritdoc />
-        protected override string GetSelectString(string tableName, string orderBy,
+        protected override string GetSelectString(string tableName, string orderBy, bool ascending,
             string filter, int offset, int pageSize)
         {
             string sql;
+            var orderDirection = ascending ? "ASC" : "DESC";
 
             if (filter == null)
                 sql = $"SELECT * FROM {tableName} " +
-                      $"ORDER BY {orderBy} " +
+                      $"ORDER BY {orderBy} {orderDirection} " +
                       $"OFFSET {offset} ROWS " +
                       $"FETCH NEXT {pageSize} ROWS ONLY";
             else

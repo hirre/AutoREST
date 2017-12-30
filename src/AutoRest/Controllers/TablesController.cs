@@ -22,11 +22,14 @@ namespace AutoRest.Controllers
         /// </summary>
         /// <param name="tableName">Table name</param>
         /// <param name="orderBy">Order by column</param>
+        /// <param name="ascending">Ascending order</param>
         /// <param name="offset">Page offset</param>
         /// <param name="pageSize">Page size</param>
         /// <returns>Table rows as a JSON string</returns>
-        [HttpGet("{tableName}/{orderBy?}/{offset?}/{pageSize?}")]
-        public IActionResult Get(string tableName, string orderBy, int offset = 0, int pageSize = 200)
+        [HttpGet("{tableName}/{orderBy?}/{ascending?}/{offset?}/{pageSize?}")]
+        public IActionResult Get(string tableName, string orderBy, 
+            bool ascending = true,
+            int offset = 0, int pageSize = 200)
         {
             if (string.IsNullOrEmpty(orderBy))
                 return BadRequest("OrderBy parameter was omitted, specify a column name, e.g. the identity column.");
@@ -36,7 +39,7 @@ namespace AutoRest.Controllers
             // Get filter if it exists
             if (Request.Query.ContainsKey("filter")) filter = Request.Query["filter"];
 
-            var res = _dbLogic.Select(tableName, orderBy, filter, offset, pageSize);
+            var res = _dbLogic.Select(tableName, orderBy, ascending, filter, offset, pageSize);
 
             if (res.Rows == null) return BadRequest(res.Message);
 

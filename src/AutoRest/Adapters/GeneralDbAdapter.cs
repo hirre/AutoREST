@@ -22,7 +22,7 @@ namespace AutoRest.Adapters
 
         /// <inheritdoc />
         public virtual (IEnumerable<IDictionary<string, object>> Rows, string Message)
-            Select(string tableName, string orderBy, string filter = null, int offset = 0, int pageSize = 200)
+            Select(string tableName, string orderBy, bool ascending, string filter = null, int offset = 0, int pageSize = 200)
         {
             var resList = new List<Dictionary<string, object>>();
 
@@ -37,7 +37,7 @@ namespace AutoRest.Adapters
                         CheckForSqlInjection(filter))
                         throw new Exception("SQL injection detected in input!");
 
-                    var sql = GetSelectString(tableName, orderBy, filter, offset, pageSize);
+                    var sql = GetSelectString(tableName, orderBy, ascending, filter, offset, pageSize);
 
                     using (var cmd = new SqlCommand(sql, conn))
                     {
@@ -208,6 +208,9 @@ namespace AutoRest.Adapters
         /// <returns></returns>
         protected bool CheckForSqlInjection(string str)
         {
+            if (string.IsNullOrEmpty(str))
+                return false;
+
             var checkStr = str.Replace("'", "''").ToLower();
             var cArr = checkStr.Split();
 
@@ -219,11 +222,13 @@ namespace AutoRest.Adapters
         /// </summary>
         /// <param name="tableName">Table name</param>
         /// <param name="orderBy">Order by column</param>
+        /// <param name="ascending">Ascending order</param>
         /// <param name="filter">Filter options</param>
         /// <param name="offset">Page offset</param>
         /// <param name="pageSize">Page size</param>
         /// <returns>The SQL string</returns>
-        protected virtual string GetSelectString(string tableName, string orderBy, string filter, int offset,
+        protected virtual string GetSelectString(string tableName, string orderBy, 
+            bool ascending, string filter, int offset,
             int pageSize)
         {
             throw new NotImplementedException(

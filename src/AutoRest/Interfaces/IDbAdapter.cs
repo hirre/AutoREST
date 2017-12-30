@@ -13,12 +13,14 @@ namespace AutoRest.Interfaces
         /// </summary>
         /// <param name="tableName">Table name</param>
         /// <param name="orderBy">Order by column name</param>
+        /// <param name="ascending">Ascending order</param>
         /// <param name="filter">Filter options</param>
         /// <param name="offset">Row offset</param>
         /// <param name="pageSize">Page size</param>
         /// <returns></returns>
         (IEnumerable<IDictionary<string, object>> Rows, string Message)
-            Select(string tableName, string orderBy, string filter = null, int offset = 0, int pageSize = 200);
+            Select(string tableName, string orderBy, bool ascending = true, 
+                string filter = null, int offset = 0, int pageSize = 200);
 
         /// <summary>
         ///     Inserts a row into the database.
