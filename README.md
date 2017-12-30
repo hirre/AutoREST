@@ -109,3 +109,5 @@ http://localhost:5000/api/tables/testtable/id/3
 * Basic SQL injection protection is implemented although you shouldn't count on it.
 * The database connection string is entered in *appsettings.json*.
 * You can also choose to extend the library with different database adapters if you don't want to use the default SQL Server adapter.
+* Doesn't support SQL joins (REST/URL includes).
+* **WARNING! Don't use this as your public REST API!**
