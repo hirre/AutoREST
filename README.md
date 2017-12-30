@@ -1,8 +1,8 @@
 # AutoREST
 
-AutoREST is a library and a console app written in ASP .NET Core which automatically creates a basic REST service for your database. 
+AutoREST is a library and a console app written in ASP .NET Core 2.0 which automatically creates a basic REST service for your database. 
 
-Don't use this as your public API!
+Don't use this as your public REST API!
 
 ## Usage
 
