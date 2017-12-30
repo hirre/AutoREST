@@ -30,7 +30,7 @@ http://localhost:5000/api/tables/testtable/id/true/0/10/?filter=column1 > 7 and 
 
 **POST**
 
-Send JSON data with *Content-Type: application/json* to below URL:
+Send JSON data to the below API endpoint:
 
 ```url
 api/tables/{TABLE NAME}/
@@ -39,6 +39,10 @@ api/tables/{TABLE NAME}/
 Example:
 
 ```url
+HEADER:
+Content-Type: application/json
+
+URL:
 http://localhost:5000/api/tables/testtable/
 
 BODY:
@@ -54,7 +58,7 @@ BODY:
 
 **PATCH/PUT**
 
-Send JSON data with *Content-Type: application/json* to below URL:
+Send JSON data to the below API endpoint:
 
 ```url
 api/tables/{TABLE NAME}/{COLUMN NAME}/{COLUMN VALUE}
@@ -65,6 +69,10 @@ Column name indicates which column to look for with a specific column value.
 Example:
 
 ```url
+HEADER:
+Content-Type: application/json
+
+URL:
 http://localhost:5000/api/tables/testtable/id/3
 
 BODY:
