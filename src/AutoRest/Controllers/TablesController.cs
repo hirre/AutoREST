@@ -31,7 +31,15 @@ namespace AutoRest.Controllers
             if (string.IsNullOrEmpty(orderBy))
                 return BadRequest("OrderBy parameter was omitted, specify a column name, e.g. the identity column.");
 
-            var res = _dbLogic.Select(tableName, orderBy, offset, pageSize);
+            string filter = null;
+
+            // Get filter if it exists
+            if (Request.Query.ContainsKey("filter"))
+            {
+                filter = Request.Query["filter"];
+            }
+
+            var res = _dbLogic.Select(tableName, orderBy, filter, offset, pageSize);
 
             if (res.Rows == null) return BadRequest(res.Message);
 

@@ -13,7 +13,7 @@ namespace AutoRest.Adapters
 
         /// <inheritdoc />
         protected override string GetSelectString(string tableName, string orderBy,
-            int offset, int pageSize)
+            string filter, int offset, int pageSize)
         {
             return $"SELECT * FROM {tableName} " +
                    $"ORDER BY {orderBy} " +
