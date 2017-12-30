@@ -19,7 +19,7 @@ or to change the default port (5000) to e.g. 5005:
 **GET**
 
 ```url
-api/tables/{TABLE NAME}/{ORDER BY COLUMN NAME}/[OPT: ORDER DIRECTION ASCENDING={true}]/[OPT: OFFSET]/[OPT: PAGE SIZE]/[OPT: ?filter={SQL FILTER}]
+api/tables/{TABLE NAME}/{ORDER BY COLUMN NAME}/[OPT: ORDER DIRECTION ASCENDING={true}]/[OPT: ROW OFFSET]/[OPT: PAGE SIZE]/[OPT: ?filter={SQL FILTER}]
 ```
 
 Examples:
