@@ -21,12 +21,13 @@ or to change the default port (5000) to e.g. 5005:
 api/tables/{TABLE NAME}/{ORDER BY COLUMN NAME}/?[OPTIONS]
 
 Query options:
+
 &asc=<bool> 				// ascending column order for {ORDER BY COLUMN NAME} (default true)
 &offset=<int>				// row offset for paging (default 0)
 &pagesize=<int>				// page size (default 200)
 &filter=<SQL>				// SQL filter statement
 &include=(src-id;dst-table;dst-id,...)	// include statement, "src-id" column name exists in above {TABLE NAME}, "dst-table" name is the table to join with and "dst-id" is its foreign key to join "src-id" with
-&outerjoin=<bool>			// indicates if left outer join should be used (default false, which is inner join)
+&outerjoin=<bool>			// indicates if left outer join should be used (default false, inner join)
 
 ```
 
