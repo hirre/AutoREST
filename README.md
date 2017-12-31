@@ -27,20 +27,23 @@ Query options:
 &offset=<int>				// offset (default 0)
 &pagesize=<int>				// page size (default 200)
 &filter=<SQL>				// SQL filter
-&include=(src-id;dst-table;dst-id,...)	// include statement, src-id is in above [TABLE NAME], dst-table is the table to join with and dst-id is its join key
+&include=(src-id;dst-table;dst-id,...)	// include statement, "src-id" column name exists in above [TABLE NAME], "dst-table" name is the table to join with and "dst-id" is its foreign key to join "src-id" with
 &outerjoin=<bool>			// indicates if outer join should be used (default false)
 
 ```
 
-In the filter statement you can refer to [TABLE NAME] columns with alias T1 (e.g. T1.id > 3). 
-The table columns in the include statement can be refered to with aliases T2, T3 and so on (as the declared order of appearance).
+In the filter statement you can refer to [TABLE NAME] columns with alias T1 (e.g. &filter=T1.id > 3). 
+The table columns in the include statement can be refered to with aliases T2, T3 and so on (as the declared order of appearance), e.g. &filter=T2.colX like '%foo' and T3.colY like '%bar%'.
 
 Examples:
 
 ```url
 http://localhost:5000/api/tables/testtable/id/
 
-http://localhost:5000/api/tables/testtable/id/?asc=true&offset=2&pagesize=10&filter=column1 > 7 and column2 like '%hello%'
+http://localhost:5000/api/tables/testtable/id/?asc=true&offset=2&pagesize=10&filter=column1 > 7 and column2 like '%foo%'
+
+http://localhost:5000/api/tables/testtable/id/?include=(id;testtable2;fkId2,col2;testtable3;fkId3)&outerjoin=true&filter=T2.colX > 9 and T3.colY like '%bar'
+
 ```
 
 **POST**
