@@ -59,13 +59,9 @@ namespace AutoRest.Adapters
                     }
                     
                 }
-
-                sql += " WHERE 1 = 1 ";
             }
-            else
-            {
-                sql += $" WHERE 1 = 1 ";
-            }
+            
+            sql += " WHERE 1 = 1 ";
             
             // Apply filter
             if (!string.IsNullOrEmpty(filter))
