@@ -42,7 +42,7 @@ http://localhost:5000/api/tables/testtable/id/
 
 http://localhost:5000/api/tables/testtable/id/?asc=true&offset=2&pagesize=10&filter=column1 > 7 and column2 like '%foo%'
 
-http://localhost:5000/api/tables/testtable/id/?include=(id;testtable2;fkId2,col2;testtable3;fkId3)&outerjoin=true&filter=T2.colX > 9 and T3.colY like '%bar'
+http://localhost:5000/api/tables/testtable/id/?include=(id;testtable2;fkId,col;testtable3;fkCol3)&outerjoin=true&filter=T2.colX > 9 and T3.colY like '%bar'
 
 ```
 
