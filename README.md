@@ -20,15 +20,27 @@ or to change the default port (5000) to e.g. 5005:
 **GET**
 
 ```url
-api/tables/{TABLE NAME}/{ORDER BY COLUMN NAME}/[OPT: ORDER DIRECTION ASCENDING={true}]/[OPT: ROW OFFSET]/[OPT: PAGE SIZE]/[OPT: ?filter={SQL FILTER}]
+api/tables/{TABLE NAME}/{ORDER BY COLUMN NAME}/?[OPTIONS]
+
+Query options:
+&asc=<bool> 				// column order (default true)
+&offset=<int>				// offset (default 0)
+&pagesize=<int>				// page size (default 200)
+&filter=<SQL>				// SQL filter
+&include=(src-id;dst-table;dst-id,...)	// include statement, src-id is in above [TABLE NAME], dst-table is the table to join with and dst-id is its join key
+&outerjoin=<bool>			// indicates if outer join should be used (default false)
+
 ```
+
+In the filter statement you can refer to [TABLE NAME] columns with alias T1 (e.g. T1.id > 3). 
+The table columns in the include statement can be refered to with aliases T2, T3 and so on (as the declared order of appearance).
 
 Examples:
 
 ```url
 http://localhost:5000/api/tables/testtable/id/
 
-http://localhost:5000/api/tables/testtable/id/true/0/10/?filter=column1 > 7 and column2 like '%hello%'
+http://localhost:5000/api/tables/testtable/id/?asc=true&offset=2&pagesize=10&filter=column1 > 7 and column2 like '%hello%'
 ```
 
 **POST**
@@ -109,5 +121,4 @@ http://localhost:5000/api/tables/testtable/id/3
 * Basic SQL injection protection is implemented although you shouldn't count on it.
 * The database connection string is entered in *appsettings.json*.
 * You can also choose to extend the library with different database adapters if you don't want to use the default SQL Server adapter.
-* Doesn't support SQL joins (REST/URL includes).
 * **WARNING! Don't use this software as your public REST API!**

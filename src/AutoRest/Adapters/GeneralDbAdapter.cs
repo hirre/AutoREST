@@ -22,7 +22,9 @@ namespace AutoRest.Adapters
 
         /// <inheritdoc />
         public virtual (IEnumerable<IDictionary<string, object>> Rows, string Message)
-            Select(string tableName, string orderBy, bool ascending, string filter = null, int offset = 0, int pageSize = 200)
+            Select(string tableName, string orderBy, bool ascending, 
+                string filter = null, string includes = null, bool outerJoin = false, 
+                int offset = 0, int pageSize = 200)
         {
             var resList = new List<Dictionary<string, object>>();
 
@@ -34,10 +36,11 @@ namespace AutoRest.Adapters
 
                     if (CheckForSqlInjection(tableName) ||
                         CheckForSqlInjection(orderBy) ||
-                        CheckForSqlInjection(filter))
+                        CheckForSqlInjection(filter) ||
+                        CheckForSqlInjection(includes))
                         throw new Exception("SQL injection detected in input!");
 
-                    var sql = GetSelectString(tableName, orderBy, ascending, filter, offset, pageSize);
+                    var sql = GetSelectString(tableName, orderBy, ascending, filter, includes, outerJoin, offset, pageSize);
 
                     using (var cmd = new SqlCommand(sql, conn))
                     {
@@ -165,6 +168,8 @@ namespace AutoRest.Adapters
 
         #region Protected virtual SQL string methods
 
+        protected const string TableAlias = "T";
+
         protected static Dictionary<string, string> SqlInjectionDictionary = 
             new Dictionary<string, string>
         {
@@ -224,12 +229,14 @@ namespace AutoRest.Adapters
         /// <param name="orderBy">Order by column</param>
         /// <param name="ascending">Ascending order</param>
         /// <param name="filter">Filter options</param>
+        /// <param name="includes">Include statement</param>
+        /// <param name="outerJoin">Indicates if outer join should be applied</param>
         /// <param name="offset">Page offset</param>
         /// <param name="pageSize">Page size</param>
         /// <returns>The SQL string</returns>
         protected virtual string GetSelectString(string tableName, string orderBy, 
-            bool ascending, string filter, int offset,
-            int pageSize)
+            bool ascending, string filter, 
+            string includes, bool outerJoin, int offset, int pageSize)
         {
             throw new NotImplementedException(
                 "Not implemented due to the fact that the SQL syntax varies depending on database server.");

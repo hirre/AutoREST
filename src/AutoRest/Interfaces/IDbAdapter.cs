@@ -15,12 +15,14 @@ namespace AutoRest.Interfaces
         /// <param name="orderBy">Order by column name</param>
         /// <param name="ascending">Ascending order</param>
         /// <param name="filter">Filter options</param>
+        /// <param name="includes">Include statement</param>
+        /// <param name="outerJoin">Indicates if outer join should be applied</param>
         /// <param name="offset">Row offset</param>
         /// <param name="pageSize">Page size</param>
         /// <returns></returns>
         (IEnumerable<IDictionary<string, object>> Rows, string Message)
             Select(string tableName, string orderBy, bool ascending = true, 
-                string filter = null, int offset = 0, int pageSize = 200);
+                string filter = null, string includes = null, bool outerJoin = false, int offset = 0, int pageSize = 200);
 
         /// <summary>
         ///     Inserts a row into the database.

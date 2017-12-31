@@ -22,24 +22,64 @@ namespace AutoRest.Controllers
         /// </summary>
         /// <param name="tableName">Table name</param>
         /// <param name="orderBy">Order by column</param>
-        /// <param name="ascending">Ascending order</param>
-        /// <param name="offset">Page offset</param>
-        /// <param name="pageSize">Page size</param>
         /// <returns>Table rows as a JSON string</returns>
-        [HttpGet("{tableName}/{orderBy?}/{ascending?}/{offset?}/{pageSize?}")]
-        public IActionResult Get(string tableName, string orderBy, 
-            bool ascending = true,
-            int offset = 0, int pageSize = 200)
+        [HttpGet("{tableName}/{orderBy?}")]
+        public IActionResult Get(string tableName, string orderBy)
         {
             if (string.IsNullOrEmpty(orderBy))
                 return BadRequest("OrderBy parameter was omitted, specify a column name, e.g. the identity column.");
 
             string filter = null;
+            string includes = null;
+            var ascending = true;
+            var outerJoin = false;
+            var offset = 0;
+            var pageSize = 200;
 
-            // Get filter if it exists
+            // Get outer join statement
+            if (Request.Query.ContainsKey("outerjoin"))
+            {
+                if (!bool.TryParse(Request.Query["outerjoin"], out outerJoin))
+                {
+                    outerJoin = false;
+                }
+            }
+
+            // Get ascending column statement
+            if (Request.Query.ContainsKey("asc"))
+            {
+                if (!bool.TryParse(Request.Query["asc"], out ascending))
+                {
+                    ascending = true;
+                }
+            }
+
+            // Get offset statement
+            if (Request.Query.ContainsKey("offset"))
+            {
+                if (!int.TryParse(Request.Query["offset"], out offset))
+                {
+                    offset = 0; // Probably not needed
+                }
+            }
+
+            // Get page size statement
+            if (Request.Query.ContainsKey("pagesize"))
+            {
+                if (!int.TryParse(Request.Query["pagesize"], out pageSize) || pageSize <= 0)
+                {
+                    pageSize = 200;
+                }
+            }
+
+            // Get filter statement
             if (Request.Query.ContainsKey("filter")) filter = Request.Query["filter"];
 
-            var res = _dbLogic.Select(tableName, orderBy, ascending, filter, offset, pageSize);
+            // Get include statement
+            if (Request.Query.ContainsKey("include")) includes = Request.Query["include"];
+
+            // Run query
+            var res = _dbLogic.Select(tableName, orderBy, ascending, filter, includes, outerJoin, offset, pageSize);
 
             if (res.Rows == null) return BadRequest(res.Message);
 
