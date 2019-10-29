@@ -41,9 +41,10 @@ namespace AutoRest.Configuration
         /// </summary>
         /// <param name="app">The app</param>
         /// <param name="env">The environment</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseMvc(routes => { routes.MapRoute("default", "api/{controller}/{action}/"); });
+            app.UseRouting();
+            app.UseEndpoints(routes => { routes.MapControllerRoute("default", "api/{controller}/{action}/"); });
         }
     }
 }

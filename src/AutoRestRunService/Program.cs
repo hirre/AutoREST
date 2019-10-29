@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace AutoRest.RunService
 {
@@ -17,7 +18,7 @@ namespace AutoRest.RunService
             var port = GetPort(args);
 
             // Create the service and block until closed.
-            AutoRestServiceFactory.Create(args, port).Run();
+            AutoRestServiceFactory.Create(args, port).Start();
 
             Console.WriteLine("Server stopped.");
         }

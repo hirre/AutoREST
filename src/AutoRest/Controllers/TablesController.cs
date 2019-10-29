@@ -1,5 +1,7 @@
-﻿using AutoRest.Interfaces;
+﻿using System.Threading.Tasks;
+using AutoRest.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace AutoRest.Controllers
@@ -8,7 +10,7 @@ namespace AutoRest.Controllers
     ///     A general controller for accessing a database.
     /// </summary>
     [Route("api/[controller]")]
-    public class TablesController : Controller
+    public class TablesController : ControllerBase
     {
         private readonly IDbAdapter _dbLogic;
 
@@ -83,7 +85,7 @@ namespace AutoRest.Controllers
 
             if (res.Rows == null) return BadRequest(res.Message);
 
-            return Json(res.Rows);
+            return Ok(JsonConvert.SerializeObject(res.Rows));
         }
 
         /// <summary>

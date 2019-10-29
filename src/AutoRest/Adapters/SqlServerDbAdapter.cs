@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using AutoRest.Interfaces;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace AutoRest.Adapters
 {

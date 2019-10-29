@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using AutoRest.Configuration;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace AutoRest
 {
@@ -16,12 +16,14 @@ namespace AutoRest
         /// <param name="args">Start arguments</param>
         /// <param name="port">Server listen port</param>
         /// <returns>Web host</returns>
-        public static IWebHost Create(string[] args, int port)
+        public static IHostBuilder Create(string[] args, int port)
         {
-            return WebHost.CreateDefaultBuilder(args)
-                .UseKestrel(options => { options.Listen(IPAddress.Loopback, port); })
-                .UseStartup<Startup>()
-                .Build();
+            return Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureKestrel(serverOptions => { serverOptions.ListenAnyIP(port); });
+                });
         }
     }
 }
