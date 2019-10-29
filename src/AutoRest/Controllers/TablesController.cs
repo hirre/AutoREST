@@ -85,7 +85,7 @@ namespace AutoRest.Controllers
 
             if (res.Rows == null) return BadRequest(res.Message);
 
-            return Ok(JsonConvert.SerializeObject(res.Rows));
+            return Ok(res.Rows);
         }
 
         /// <summary>

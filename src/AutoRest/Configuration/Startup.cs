@@ -28,7 +28,8 @@ namespace AutoRest.Configuration
         /// <param name="services">Services</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvcCore();
+            services.AddControllers();
             services.AddScoped<IDbConnection>(x =>
                 new ConnectionObject(Configuration.GetConnectionString("DatabaseContext")));
 
