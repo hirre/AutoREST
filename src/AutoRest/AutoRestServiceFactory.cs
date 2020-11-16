@@ -16,14 +16,15 @@ namespace AutoRest
         /// <param name="args">Start arguments</param>
         /// <param name="port">Server listen port</param>
         /// <returns>Web host</returns>
-        public static IHostBuilder Create(string[] args, int port)
+        public static IHost Create(string[] args, int port)
         {
             return Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.ConfigureKestrel(serverOptions => { serverOptions.ListenAnyIP(port); });
-                });
+                })
+                .Build();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Hosting;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
 namespace AutoRest.RunService
@@ -13,12 +13,15 @@ namespace AutoRest.RunService
         ///     The main method.
         /// </summary>
         /// <param name="args">Start arguments</param>
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var port = GetPort(args);
 
             // Create the service and block until closed.
-            AutoRestServiceFactory.Create(args, port).Start();
+            using var host = AutoRestServiceFactory.Create(args, port);
+
+            await host.RunAsync();
+            await host.StopAsync();
 
             Console.WriteLine("Server stopped.");
         }
